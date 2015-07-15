@@ -118,7 +118,7 @@ public class Form {
 						robot.keyPress(KeyEvent.VK_ENTER);
 						robot.keyRelease(KeyEvent.VK_ENTER);
 					} else if(rec[1].equals("190")) {
-						robot.keyPress(KeyEvent.VK_DECIMAL);
+						robot.keyPress(KeyEvent.VK_PERIOD);
 						robot.keyRelease(KeyEvent.VK_PERIOD);
 					} else {
 						if(rec[1].startsWith("Big")) {
