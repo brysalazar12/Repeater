@@ -9,6 +9,10 @@ import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import repeater.WinUserX.LowLevelMouseProc;
 import repeater.WinUserX.MSLLHOOKSTRUCT;
 
@@ -20,6 +24,13 @@ public class GlobalMouseListener extends Thread{
     private static volatile boolean quit;
     private static WinUser.HHOOK hhk;
     private static LowLevelMouseProc mouseHook;
+	private static Method leftMouseClick;
+	private static Object handler;
+	
+	public void addListener(Method leftMouseClick, Object handler) {
+		GlobalMouseListener.leftMouseClick = leftMouseClick;
+		GlobalMouseListener.handler = handler;
+	}
 
 	@Override
 	public void run() {
@@ -35,13 +46,24 @@ public class GlobalMouseListener extends Thread{
                     switch (wParam.intValue())
                     {
                         case WinUserX.WM_LBUTTONDOWN:
-                            System.out.println("Left button click at " + info.pt.x + ", " + info.pt.y);
+//                            System.out.println("Left button click at " + info.pt.x + ", " + info.pt.y);
+							{
+								try {
+									GlobalMouseListener.leftMouseClick.invoke(GlobalMouseListener.handler, info.pt.x, info.pt.x);
+								} catch (IllegalAccessException ex) {
+									Logger.getLogger(GlobalMouseListener.class.getName()).log(Level.SEVERE, null, ex);
+								} catch (IllegalArgumentException ex) {
+									Logger.getLogger(GlobalMouseListener.class.getName()).log(Level.SEVERE, null, ex);
+								} catch (InvocationTargetException ex) {
+									Logger.getLogger(GlobalMouseListener.class.getName()).log(Level.SEVERE, null, ex);
+								}
+							}
                             break;
                         case WinUserX.WM_LBUTTONUP:
-                            System.out.println("Left button release.");
+//                            System.out.println("Left button release.");
                             break;
                         case WinUserX.WM_MBUTTONDOWN:
-                            System.out.println("Middle button.");
+//                            System.out.println("Middle button.");
                             quit = true;
                             break;
                     }
