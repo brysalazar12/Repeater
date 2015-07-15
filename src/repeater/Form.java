@@ -117,6 +117,9 @@ public class Form {
 					if(rec[1].equals("13")) {
 						robot.keyPress(KeyEvent.VK_ENTER);
 						robot.keyRelease(KeyEvent.VK_ENTER);
+					} else if(rec[1].equals("190")) {
+						robot.keyPress(KeyEvent.VK_DECIMAL);
+						robot.keyRelease(KeyEvent.VK_PERIOD);
 					} else {
 						if(rec[1].startsWith("Big")) {
 							rec[1] = rec[1].substring(4);
